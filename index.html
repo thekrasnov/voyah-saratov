@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOYAH Саратов — официальный дилер и сервис</title>
+  <meta name="description" content="VOYAH Саратов — единственный официальный дилер в Саратове и области. Продажа, тест-драйв и официальное обслуживание." />
+  <style>
+    :root{
+      --bg:#07090c;
+      --panel:#0c1017;
+      --text:#f5f7fb;
+      --muted:rgba(245,247,251,.72);
+      --line:rgba(245,247,251,.14);
+      --accent:#ffffff;
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+      --r16:16px;
+      --r24:24px;
+      --r32:32px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 600px at 65% -10%, rgba(255,255,255,.08), transparent 55%), var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:inherit}
+
+    /* Layout */
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px;}
+    .section{padding: clamp(46px, 7vw, 92px) 0;}
+    .section h2{font-size: clamp(22px, 3.2vw, 34px); margin:0 0 20px; letter-spacing:.2px;}
+    .lead{color:var(--muted); font-size: clamp(15px, 1.7vw, 18px); max-width: 880px;}
+
+    /* Header */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(7,9,12,.55);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .row{
+      height:68px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:10px;
+      border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.02));
+      display:grid; place-items:center;
+      box-shadow: var(--shadow);
+    }
+    .brand b{letter-spacing:.7px}
+    .nav{display:flex; gap:18px; align-items:center}
+    .nav a{color:var(--muted); text-decoration:none; font-size:14px}
+    .nav a:hover{color:var(--text)}
+    .actions{display:flex; gap:10px; align-items:center}
+
+    /* Buttons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22);}
+    .btn.primary{background: rgba(255,255,255,.92); color:#0b0f14; border-color: rgba(255,255,255,.9);}
+    .btn.primary:hover{background:#fff}
+    .btn.small{padding:10px 14px; font-size:13px}
+
+    /* Hero + Carousel */
+    .hero{
+      position:relative;
+      padding: 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .carousel{
+      position:relative;
+      height: clamp(520px, 76vh, 760px);
+      overflow:hidden;
+      border-radius: 0 0 var(--r32) var(--r32);
+    }
+    .slide{
+      position:absolute; inset:0;
+      opacity:0;
+      transform: scale(1.02);
+      transition: opacity .6s ease, transform 1.2s ease;
+      background-size: cover;
+      background-position: center;
+      background-repeat:no-repeat;
+    }
+    .slide.is-active{opacity:1; transform: scale(1);}
+    .overlay{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, rgba(7,9,12,.86) 0%, rgba(7,9,12,.55) 42%, rgba(7,9,12,.22) 70%, rgba(7,9,12,.05) 100%),
+        linear-gradient(0deg, rgba(7,9,12,.88) 0%, rgba(7,9,12,.10) 60%);
+    }
+    .hero-content{
+      position:absolute; inset:0;
+      display:flex; align-items:flex-end;
+      padding: clamp(26px, 5vw, 56px);
+    }
+    .hero-box{
+      max-width: 760px;
+      padding: clamp(18px, 3vw, 26px);
+      border:1px solid var(--line);
+      border-radius: var(--r24);
+      background: rgba(12,16,23,.55);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+    .kicker{color:var(--muted); font-weight:600; letter-spacing:.3px; font-size:14px;}
+    .hero h1{margin:10px 0 12px; font-size: clamp(28px, 4.6vw, 48px); line-height:1.08; letter-spacing:.2px;}
+    .hero p{margin:0 0 18px; color:var(--muted); font-size: clamp(15px, 1.7vw, 18px);}
+    .hero-cta{display:flex; gap:10px; flex-wrap:wrap}
+
+    .dots{
+      position:absolute; left:0; right:0; bottom: 22px;
+      display:flex; justify-content:center; gap:10px;
+      pointer-events:auto;
+    }
+    .dot{
+      width: 38px; height: 4px; border-radius: 20px;
+      background: rgba(255,255,255,.20);
+      border: 1px solid rgba(255,255,255,.12);
+      cursor:pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .dot.is-active{background: rgba(255,255,255,.80); transform: scaleX(1.05);}
+
+    /* Cards / Grids */
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap: 18px;}
+    .card{
+      border: 1px solid var(--line);
+      border-radius: var(--r24);
+      background: rgba(12,16,23,.55);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .pad{padding: 22px;}
+    .card h3{margin:0 0 10px; font-size:18px}
+    .card p{margin:0; color:var(--muted)}
+
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    /* Model tiles */
+    .model{
+      grid-column: span 4;
+      min-height: 320px;
+      position:relative;
+      background-size: cover;
+      background-position: center;
+      background-repeat:no-repeat;
+    }
+    .model::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(0deg, rgba(7,9,12,.92) 0%, rgba(7,9,12,.35) 60%, rgba(7,9,12,.12) 100%);
+    }
+    .model .pad{position:absolute; left:0; right:0; bottom:0;}
+    .model h3{font-size:20px}
+    .model .meta{margin:0 0 14px; color: rgba(245,247,251,.78)}
+    .model .row{display:flex; gap:10px; flex-wrap:wrap}
+
+    /* Split */
+    .split{display:grid; grid-template-columns: 1.2fr .8fr; gap: 18px; align-items:stretch;}
+
+    /* Form */
+    form{display:grid; gap:12px;}
+    .field{display:grid; gap:8px;}
+    label{font-size:13px; color:var(--muted)}
+    input, textarea, select{
+      width:100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{color:rgba(245,247,251,.45)}
+    textarea{min-height: 110px; resize: vertical;}
+    .form-note{color:rgba(245,247,251,.52); font-size:12px; margin:0;}
+
+    /* Contacts */
+    .contact-grid .card{grid-column: span 6;}
+
+    /* Footer */
+    footer{border-top:1px solid var(--line); padding: 34px 0; color: rgba(245,247,251,.62);}
+    footer a{color: rgba(245,247,251,.74); text-decoration:none}
+    footer a:hover{color:var(--text)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .nav{display:none}
+      .model{grid-column: span 12; min-height: 280px;}
+      .split{grid-template-columns: 1fr;}
+      .contact-grid .card{grid-column: span 12;}
+      .carousel{border-radius: 0 0 var(--r24) var(--r24);} 
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <div class="row">
+        <a class="brand" href="#top" aria-label="VOYAH Саратов">
+          <span class="logo">V</span>
+          <div>
+            <b>VOYAH</b><br>
+            <span style="font-size:12px;color:rgba(245,247,251,.65)">Саратов · официальный дилер</span>
+          </div>
+        </a>
+
+        <nav class="nav" aria-label="Навигация">
+          <a href="#models">Модели</a>
+          <a href="#benefits">Преимущества</a>
+          <a href="#service">Сервис</a>
+          <a href="#form">Заявка</a>
+          <a href="#contacts">Контакты</a>
+        </nav>
+
+        <div class="actions">
+          <a class="btn small" href="tel:+70000000000">Позвонить</a>
+          <a class="btn primary small" href="#form">Тест-драйв</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- HERO / CAROUSEL -->
+    <section class="hero">
+      <div class="carousel" aria-label="Промо-блок">
+        <!-- Замените изображения на свои (или на официально разрешённые для использования) -->
+        <div class="slide is-active" style="background-image:url('https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=2200&q=80')" role="img" aria-label="VOYAH — премиальный электромобиль"></div>
+        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=2200&q=80')" role="img" aria-label="VOYAH — интерьер и технологии"></div>
+        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2200&q=80')" role="img" aria-label="VOYAH — динамика и комфорт"></div>
+
+        <div class="overlay" aria-hidden="true"></div>
+
+        <div class="hero-content">
+          <div class="hero-box">
+            <div class="kicker">Единственный официальный дилер в Саратове и Саратовской области</div>
+            <h1>VOYAH — премиальные электромобили и гибриды</h1>
+            <p>Продажа, тест-драйв и официальное обслуживание по стандартам производителя. Подберём комплектацию и условия покупки под ваш запрос.</p>
+            <div class="hero-cta">
+              <a class="btn primary" href="#form">Записаться на тест-драйв</a>
+              <a class="btn" href="#models">Смотреть модели</a>
+              <a class="btn" href="#service">Официальный сервис</a>
+            </div>
+            <div class="badge">Официальная гарантия · Оригинальные запчасти · Обновления ПО</div>
+          </div>
+        </div>
+
+        <div class="dots" aria-label="Переключатель слайдов">
+          <div class="dot is-active" data-slide="0" aria-label="Слайд 1" role="button" tabindex="0"></div>
+          <div class="dot" data-slide="1" aria-label="Слайд 2" role="button" tabindex="0"></div>
+          <div class="dot" data-slide="2" aria-label="Слайд 3" role="button" tabindex="0"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / STATUS -->
+    <section class="section">
+      <div class="container">
+        <h2>Официальный дилер VOYAH в регионе</h2>
+        <p class="lead">Мы сопровождаем клиента на каждом этапе: консультация и подбор модели, тест-драйв, покупка, гарантийное и постгарантийное обслуживание.</p>
+
+        <div class="grid" style="margin-top:18px">
+          <div class="card" style="grid-column: span 4;">
+            <div class="pad">
+              <h3>Статус дилера</h3>
+              <p>Единственный дилер VOYAH в Саратове и области. Прямое взаимодействие с брендом и стандартами обслуживания.</p>
+            </div>
+          </div>
+          <div class="card" style="grid-column: span 4;">
+            <div class="pad">
+              <h3>Прозрачные условия</h3>
+              <p>Понятные предложения по покупке, trade-in и финансированию. Без лишних шагов и «сюрпризов».</p>
+            </div>
+          </div>
+          <div class="card" style="grid-column: span 4;">
+            <div class="pad">
+              <h3>Официальный сервис</h3>
+              <p>Сертифицированные специалисты, оригинальные запчасти и обновления программного обеспечения.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODELS -->
+    <section id="models" class="section">
+      <div class="container">
+        <h2>Модели VOYAH</h2>
+        <p class="lead">Крупные карточки в «витринном» стиле: быстро сравнить и выбрать.</p>
+
+        <div class="grid" style="margin-top:18px">
+          <div class="card model" style="background-image:url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=2000&q=80');">
+            <div class="pad">
+              <h3>VOYAH FREE</h3>
+              <p class="meta">Премиальный кроссовер · комфорт и технологии</p>
+              <div class="row">
+                <a class="btn primary small" href="#form">Узнать наличие</a>
+                <a class="btn small" href="#form">Тест-драйв</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card model" style="background-image:url('https://images.unsplash.com/photo-1611016186353-9af58c69a533?auto=format&fit=crop&w=2000&q=80');">
+            <div class="pad">
+              <h3>VOYAH DREAM</h3>
+              <p class="meta">Минивэн/MPV · максимум пространства</p>
+              <div class="row">
+                <a class="btn primary small" href="#form">Подбор комплектации</a>
+                <a class="btn small" href="#form">Тест-драйв</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card model" style="background-image:url('https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=2000&q=80');">
+            <div class="pad">
+              <h3>VOYAH PASSION</h3>
+              <p class="meta">Седан · статус и динамика</p>
+              <div class="row">
+                <a class="btn primary small" href="#form">Получить предложение</a>
+                <a class="btn small" href="#form">Тест-драйв</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="form-note" style="margin-top:14px">* Изображения — временные плейсхолдеры. Подставим ваши фото/рендеры моделей.</p>
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section id="benefits" class="section">
+      <div class="container">
+        <h2>Почему выбирают нас</h2>
+        <div class="grid" style="margin-top:18px">
+          <div class="card" style="grid-column: span 3;"><div class="pad"><h3>Единственные в регионе</h3><p>Официальный дилер VOYAH в Саратове и области.</p></div></div>
+          <div class="card" style="grid-column: span 3;"><div class="pad"><h3>Тест-драйв</h3><p>Организуем поездку и покажем ключевые преимущества.</p></div></div>
+          <div class="card" style="grid-column: span 3;"><div class="pad"><h3>Trade-in</h3><p>Оценка автомобиля и зачёт стоимости в покупку.</p></div></div>
+          <div class="card" style="grid-column: span 3;"><div class="pad"><h3>Кредит/лизинг</h3><p>Подбор программы под ваш бюджет и сроки.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE + FORM -->
+    <section id="service" class="section">
+      <div class="container">
+        <h2>Официальное обслуживание VOYAH</h2>
+        <div class="split" style="margin-top:18px">
+          <div class="card">
+            <div class="pad">
+              <h3>Сервис по стандартам производителя</h3>
+              <p class="lead" style="margin:0 0 14px">Сертифицированные специалисты, регламентные работы, диагностика, оригинальные запчасти и обновления ПО.</p>
+              <div class="grid" style="gap:12px">
+                <div class="card" style="grid-column: span 6; background: rgba(255,255,255,.04); box-shadow:none;"><div class="pad" style="padding:16px"><b>ТО и диагностика</b><div style="color:var(--muted); font-size:13px">Плановое обслуживание и проверка систем</div></div></div>
+                <div class="card" style="grid-column: span 6; background: rgba(255,255,255,.04); box-shadow:none;"><div class="pad" style="padding:16px"><b>Оригинальные детали</b><div style="color:var(--muted); font-size:13px">Рекомендованные расходники и запчасти</div></div></div>
+                <div class="card" style="grid-column: span 6; background: rgba(255,255,255,.04); box-shadow:none;"><div class="pad" style="padding:16px"><b>Обновления ПО</b><div style="color:var(--muted); font-size:13px">Актуальные версии и настройки</div></div></div>
+                <div class="card" style="grid-column: span 6; background: rgba(255,255,255,.04); box-shadow:none;"><div class="pad" style="padding:16px"><b>Гарантия</b><div style="color:var(--muted); font-size:13px">Гарантийный и постгарантийный ремонт</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" id="form">
+            <div class="pad">
+              <h3>Заявка на консультацию / тест-драйв</h3>
+              <p class="form-note" style="margin:0 0 12px">Оставьте контакты — мы перезвоним и уточним детали.</p>
+              <form onsubmit="return submitLead(event)">
+                <div class="field">
+                  <label for="name">Имя</label>
+                  <input id="name" name="name" placeholder="Как к вам обращаться" required />
+                </div>
+                <div class="field">
+                  <label for="phone">Телефон</label>
+                  <input id="phone" name="phone" placeholder="+7 (___) ___-__-__" required />
+                </div>
+                <div class="field">
+                  <label for="model">Интересующая модель</label>
+                  <select id="model" name="model">
+                    <option value="">Выберите модель</option>
+                    <option>VOYAH FREE</option>
+                    <option>VOYAH DREAM</option>
+                    <option>VOYAH PASSION</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="comment">Комментарий</label>
+                  <textarea id="comment" name="comment" placeholder="Например: хочу тест-драйв на выходных, интересует trade-in"></textarea>
+                </div>
+                <button class="btn primary" style="width:100%; border-radius:16px; padding:14px;" type="submit">Отправить заявку</button>
+                <p class="form-note">Нажимая «Отправить», вы соглашаетесь с обработкой персональных данных. <a href="#privacy">Политика</a></p>
+                <p id="ok" class="form-note" style="display:none; color: rgba(255,255,255,.85)">✅ Заявка отправлена (демо). Подключим CRM/почту/Telegram.</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section id="contacts" class="section">
+      <div class="container">
+        <h2>Контакты</h2>
+        <div class="grid contact-grid" style="margin-top:18px">
+          <div class="card">
+            <div class="pad">
+              <h3>Дилерский центр</h3>
+              <p><b>Адрес:</b> г. Саратов, (указать адрес)</p>
+              <p><b>Телефон:</b> <a href="tel:+70000000000">+7 (___) ___-__-__</a></p>
+              <p><b>График:</b> ежедневно, 9:00–20:00</p>
+              <div class="hero-cta" style="margin-top:10px">
+                <a class="btn small" href="#" onclick="alert('Здесь будет ссылка на карту/маршрут'); return false;">Построить маршрут</a>
+                <a class="btn small" href="#" onclick="alert('Подставьте ссылку на WhatsApp/Telegram'); return false;">WhatsApp/Telegram</a>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pad">
+              <h3>FAQ</h3>
+              <p><b>Вы точно единственный дилер в регионе?</b><br><span style="color:var(--muted)">Да, официальный дилер VOYAH в Саратове и области.</span></p>
+              <p><b>Можно обслуживаться, если авто куплено в другом городе?</b><br><span style="color:var(--muted)">Да, принимаем автомобили VOYAH на официальное обслуживание.</span></p>
+              <p><b>Есть оригинальные запчасти?</b><br><span style="color:var(--muted)">Используем оригинальные детали и рекомендованные расходники.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY (short) -->
+    <section id="privacy" class="section" style="padding-top:0">
+      <div class="container">
+        <div class="card">
+          <div class="pad">
+            <h3 style="margin-top:0">Политика обработки персональных данных (кратко)</h3>
+            <p style="color:var(--muted); margin:0">
+              Мы обрабатываем данные, которые вы оставляете в форме (имя, телефон и комментарий),
+              только для связи с вами по вопросам консультации, тест-драйва или сервиса.
+              Данные не передаются третьим лицам, кроме случаев, предусмотренных законом.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between">
+          <div>
+            <b style="color:var(--text)">VOYAH Саратов</b><br>
+            <span>Официальный дилер</span>
+          </div>
+          <div style="text-align:right">
+            <span>ООО «________» · ИНН ________ · ОГРН ________</span><br>
+            <span>Информация на сайте не является публичной офертой. Комплектации и характеристики могут отличаться.</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Simple carousel (no dependencies)
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    let idx = 0;
+    let timer = null;
+
+    function setSlide(next){
+      idx = (next + slides.length) % slides.length;
+      slides.forEach((s,i)=>s.classList.toggle('is-active', i===idx));
+      dots.forEach((d,i)=>d.classList.toggle('is-active', i===idx));
+    }
+
+    function start(){
+      stop();
+      timer = setInterval(()=>setSlide(idx+1), 5200);
+    }
+    function stop(){
+      if(timer) clearInterval(timer);
+      timer = null;
+    }
+
+    dots.forEach(d=>{
+      d.addEventListener('click', ()=>{ setSlide(Number(d.dataset.slide)); start(); });
+      d.addEventListener('keydown', (e)=>{
+        if(e.key==='Enter' || e.key===' ') { e.preventDefault(); setSlide(Number(d.dataset.slide)); start(); }
+      });
+    });
+
+    document.querySelector('.carousel')?.addEventListener('mouseenter', stop);
+    document.querySelector('.carousel')?.addEventListener('mouseleave', start);
+
+    start();
+
+    // Demo form handler (replace with real integration)
+    function submitLead(e){
+      e.preventDefault();
+      const ok = document.getElementById('ok');
+      ok.style.display = 'block';
+      e.target.reset();
+      return false;
+    }
+    window.submitLead = submitLead;
+  </script>
+</body>
+</html>
