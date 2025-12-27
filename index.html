@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VOYAH Саратов — официальный дилер</title>
+<meta name="description" content="VOYAH — единственный официальный дилер в Саратове и области. Продажа, тест-драйв, сервис.">
 
 <style>
 :root{
@@ -43,23 +44,43 @@ a{color:inherit;text-decoration:none}
 .nav a:hover{color:#fff}
 
 /* Hero */
-.hero{position:relative;height:90vh;min-height:520px}
-.slide{
-  position:absolute;inset:0;
-  background:url("https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=2200&q=80") center/cover no-repeat;
+.hero{
+  position:relative;
+  height:90vh;
+  min-height:520px;
+  overflow:hidden;
 }
+.slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .8s ease;
+  background-size:cover;
+  background-position:center;
+}
+.slide.is-active{opacity:1}
+
+.slide-1{background-image:url("images/hero-free.jpg")}
+.slide-2{background-image:url("images/hero-dream.jpg")}
+.slide-3{background-image:url("images/hero-passion.jpg")}
+
 .overlay{
-  position:absolute;inset:0;
+  position:absolute;
+  inset:0;
   background:linear-gradient(0deg,rgba(7,9,12,.9),rgba(7,9,12,.2));
 }
+
 .hero-content{
-  position:absolute;bottom:40px;left:0;right:0;
+  position:absolute;
+  bottom:40px;
+  left:0;
+  right:0;
   max-width:1180px;
   margin:0 auto;
   padding:0 20px;
 }
 .hero-box{
-  max-width:700px;
+  max-width:720px;
   background:rgba(12,16,23,.6);
   border:1px solid var(--line);
   border-radius:20px;
@@ -82,6 +103,22 @@ a{color:inherit;text-decoration:none}
   background:#fff;
   color:#000;
 }
+
+/* Dots */
+.dots{
+  position:absolute;
+  bottom:20px;
+  left:0;right:0;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+.dot{
+  width:36px;height:4px;
+  border-radius:20px;
+  background:rgba(255,255,255,.3);
+}
+.dot.is-active{background:#fff}
 
 /* Sections */
 .section{
@@ -109,7 +146,10 @@ footer{
   text-align:center;
 }
 
-/* MOBILE */
+/* Fixed mobile CTA */
+.mobile-cta{display:none}
+
+/* Mobile */
 @media (max-width:768px){
   .nav{display:none}
   .hero{height:78vh}
@@ -119,6 +159,23 @@ footer{
   .hero-cta .btn{width:100%}
   .section{padding:40px 20px}
   .grid{grid-template-columns:1fr}
+
+  .mobile-cta{
+    display:flex;
+    position:fixed;
+    left:16px;
+    right:16px;
+    bottom:16px;
+    height:52px;
+    background:#fff;
+    color:#000;
+    font-weight:700;
+    border-radius:26px;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    z-index:100;
+  }
 }
 </style>
 </head>
@@ -137,8 +194,11 @@ footer{
 </header>
 
 <section class="hero">
-  <div class="slide"></div>
+  <div class="slide slide-1 is-active"></div>
+  <div class="slide slide-2"></div>
+  <div class="slide slide-3"></div>
   <div class="overlay"></div>
+
   <div class="hero-content">
     <div class="hero-box">
       <h1>VOYAH — премиальные электромобили</h1>
@@ -148,6 +208,12 @@ footer{
         <a class="btn" href="#models">Смотреть модели</a>
       </div>
     </div>
+  </div>
+
+  <div class="dots">
+    <div class="dot is-active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
   </div>
 </section>
 
@@ -162,13 +228,29 @@ footer{
 
 <section id="service" class="section">
   <h2>Официальный сервис</h2>
-  <p class="muted">Гарантийное и постгарантийное обслуживание, оригинальные запчасти, обновления ПО.</p>
+  <p>Гарантийное и постгарантийное обслуживание, оригинальные запчасти, обновления ПО.</p>
 </section>
 
 <footer id="contacts">
   VOYAH Саратов · Официальный дилер<br>
   Информация не является публичной офертой
 </footer>
+
+<a href="tel:+70000000000" class="mobile-cta">Позвонить</a>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+let i = 0;
+
+setInterval(()=>{
+  slides[i].classList.remove('is-active');
+  dots[i].classList.remove('is-active');
+  i = (i + 1) % slides.length;
+  slides[i].classList.add('is-active');
+  dots[i].classList.add('is-active');
+}, 5000);
+</script>
 
 </body>
 </html>
